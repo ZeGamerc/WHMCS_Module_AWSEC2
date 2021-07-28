@@ -342,6 +342,7 @@ function AWSEC2_ClientArea(array $params)
     if ($params['status'] != 'Active') {
         return;
     }
+
     $data = json_decode($params['customfields']['data'], true);
     if ($_REQUEST['do'] == 'getpem') {
         Header("Content-type: application/octet-stream");
