@@ -353,10 +353,6 @@ function AWSEC2_ClientArea(array $params)
         exit($params['customfields']['pem']);
     }
 
-    $oslist = [
-        '1' => array('username' => 'centos', 'name' => 'CentOS 7'),
-        '2' => array('username' => 'admin', 'name' => 'Debian 10'),
-    ];
     try {
         $ec2 = new Ec2Client([
             'region' => $params['configoption3'],
@@ -396,8 +392,6 @@ function AWSEC2_ClientArea(array $params)
         return array(
             'tabOverviewReplacementTemplate' => 'clientarea.tpl',
             'vars' => array(
-                'username' => $oslist[$params['configoption5']]['username'],
-                'system' => $oslist[$params['configoption5']]['name'],
                 'ip'    => $eth['NetworkInterfaces'][0]['Association']['PublicIp'],
                 'domain' => $params['domain'],
             ),
