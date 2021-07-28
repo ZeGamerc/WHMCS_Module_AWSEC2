@@ -273,10 +273,8 @@ function AWSEC2_UnsuspendAccount(array $params)
     return AWSEC2_boot($params);
 }
 
-
 function AWSEC2_TerminateAccount(array $params)
 {
-
     try {
         $data = json_decode($params['customfields']['data'], true);
 
@@ -380,7 +378,7 @@ function AWSEC2_ClientArea(array $params)
                 ],
             ]);
 
-            $check = $route53->updateHealthCheck([
+            $route53->updateHealthCheck([
                 'HealthCheckId' => $data['check'],
                 'Disabled' => false,
                 'IPAddress' => $eth['NetworkInterfaces'][0]['Association']['PublicIp'],
@@ -403,14 +401,11 @@ function AWSEC2_ClientArea(array $params)
 
 function AWSEC2_shutdown(array $params)
 {
-
-
     if ($params['configoption7'] != 'enable') {
         return '管理员已关闭此功能';
     }
 
     try {
-
         $data = json_decode($params['customfields']['data'], true);
         $ec2 = new Ec2Client([
             'region' => $params['configoption3'],
@@ -433,13 +428,11 @@ function AWSEC2_shutdown(array $params)
 
 function AWSEC2_boot(array $params)
 {
-
     if ($params['configoption7'] != 'enable') {
         return '管理员已关闭此功能';
     }
 
     try {
-
         $data = json_decode($params['customfields']['data'], true);
         $ec2 = new Ec2Client([
             'region' => $params['configoption3'],
@@ -490,14 +483,11 @@ function AWSEC2_boot(array $params)
 
 function AWSEC2_reboot(array $params)
 {
-
-
     if ($params['configoption7'] != 'enable') {
         return '管理员已关闭此功能';
     }
 
     try {
-
         $data = json_decode($params['customfields']['data'], true);
         $ec2 = new Ec2Client([
             'region' => $params['configoption3'],
@@ -517,7 +507,6 @@ function AWSEC2_reboot(array $params)
         return $e->getMessage();
     }
 }
-
 
 function AWSEC2_enable_aga(array $params)
 {
@@ -650,7 +639,6 @@ function AWSEC2_enable_aga(array $params)
 function AWSEC2_disable_aga(array $params)
 {
     try {
-
         $data = json_decode($params['customfields']['data'], true);
 
         if (isset($data['check'])) {
@@ -669,9 +657,7 @@ function AWSEC2_disable_aga(array $params)
             AWSEC2_setCustomfieldsValue($params, 'data', json_encode($data));
         }
 
-
         if (isset($data['aga'])) {
-
             $gac = new GlobalAcceleratorClient([
                 'region' => 'us-west-2',
                 'version' => '2018-08-08',
@@ -711,12 +697,11 @@ function AWSEC2_disable_aga(array $params)
             $gac->deleteAccelerator([
                 'AcceleratorArn' => $data['aga'], // REQUIRED
             ]);
+
             unset($data['aga']);
             Capsule::table('tblhosting')->where('id', $params['serviceid'])->update(['domain' => '']);
             AWSEC2_setCustomfieldsValue($params, 'data', json_encode($data));
         }
-
-
 
         AWSEC2_setCustomfieldsValue($params, 'data', json_encode($data));
         return 'success';
